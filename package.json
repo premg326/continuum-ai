@@ -1,0 +1,24 @@
+{
+  "name": "continuum",
+  "version": "1.0.0",
+  "description": "",
+  "main": "gemini.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/premg326/continuum-ai.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/premg326/continuum-ai/issues"
+  },
+  "homepage": "https://github.com/premg326/continuum-ai#readme",
+  "dependencies": {
+    "vercel": "^54.13.0"
+  }
+}

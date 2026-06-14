@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Continuum - Analyze Discussion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* === RESET & BASE === */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #050507;
+      color: #ffffff;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* === BACKGROUND EFFECTS === */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      right: -10%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(0, 229, 255, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* === CONTAINER === */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* === HEADER === */
+    .header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    /* Logo */
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 2.5rem;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, #00e5ff 0%, #a855f7 100%);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.3);
+    }
+
+    /* Page Title */
+    .page-title {
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+    }
+
+    .page-subtitle {
+      font-size: 1.125rem;
+      color: #9ca3af;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* === INPUT CARD === */
+    .input-card {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      padding: 2rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Textarea Label */
+    .textarea-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #d1d5db;
+      margin-bottom: 1rem;
+    }
+
+    .textarea-icon {
+      color: #00e5ff;
+    }
+
+    /* Textarea */
+    .transcript-input {
+      width: 100%;
+      min-height: 350px;
+      flex: 1;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.5rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      color: #e5e7eb;
+      line-height: 1.8;
+      resize: none;
+      transition: all 0.3s ease;
+    }
+
+    .transcript-input:focus {
+      outline: none;
+      border-color: rgba(0, 229, 255, 0.4);
+      box-shadow: 0 0 0 4px rgba(0, 229, 255, 0.1);
+    }
+
+    .transcript-input::placeholder {
+      color: #4b5563;
+    }
+
+    /* === INPUT FOOTER === */
+    .input-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Character Counter */
+    .char-counter {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    .current-count {
+      font-weight: 600;
+      color: #9ca3af;
+    }
+
+    .char-counter.warning .current-count {
+      color: #f59e0b;
+    }
+
+    .char-counter.danger .current-count {
+      color: #ef4444;
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.875rem 1.75rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00e5ff 0%, #00c4ff 100%);
+      color: #050507;
+      box-shadow: 0 4px 20px rgba(0, 229, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 229, 255, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #d1d5db;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+    }
+
+    /* === SUCCESS ANIMATION === */
+    .analyzing-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(5, 5, 7, 0.95);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .analyzing-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .analyzing-content {
+      text-align: center;
+    }
+
+    .analyzing-spinner {
+      width: 60px;
+      height: 60px;
+      border: 3px solid rgba(0, 229, 255, 0.2);
+      border-top-color: #00e5ff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.5rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .analyzing-text {
+      font-size: 1.125rem;
+      color: #9ca3af;
+    }
+
+    .analyzing-dots {
+      display: inline-flex;
+      gap: 0.25rem;
+    }
+
+    .analyzing-dots span {
+      width: 6px;
+      height: 6px;
+      background: #00e5ff;
+      border-radius: 50%;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    .analyzing-dots span:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .analyzing-dots span:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .container {
+        padding: 2rem 1rem;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .page-subtitle {
+        font-size: 1rem;
+      }
+
+      .input-card {
+        padding: 1.5rem;
+      }
+
+      .transcript-input {
+        min-height: 280px;
+        font-size: 0.95rem;
+      }
+
+      .input-footer {
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+
+      .button-group {
+        width: 100%;
+      }
+
+      .btn {
+        flex: 1;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page-title {
+        font-size: 1.75rem;
+      }
+
+      .logo {
+        font-size: 1.1rem;
+      }
+
+      .logo-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="header">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">◈</span>
+        <span>Continuum</span>
+      </a>
+      <h1 class="page-title">Analyze Discussion</h1>
+      <p class="page-subtitle">
+        Paste a discussion transcript. Continuum will identify decisions, dependencies, risks and forgotten follow-ups.
+      </p>
+    </header>
+
+    <main class="input-card">
+      <label class="textarea-label">
+        <span class="textarea-icon">📝</span>
+        <span>Discussion Transcript</span>
+      </label>
+      
+      <textarea 
+        id="transcript" 
+        class="transcript-input" 
+        placeholder="Manager: We need to repair Signal A.
+
+Engineer: We need additional crew.
+
+Manager: Let's discuss rerouting first.
+
+Operations: Passengers may be affected.
+
+Manager: We'll return to crew allocation later."
+      ></textarea>
+
+      <div class="input-footer">
+        <div class="char-counter">
+          <span>Characters:</span>
+          <span id="charCount" class="current-count">0</span>
+        </div>
+
+        <div class="button-group">
+          <button id="clearBtn" class="btn btn-secondary">Clear</button>
+          <button id="analyzeBtn" class="btn btn-primary">Analyze Discussion</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Analyzing Overlay -->
+  <div id="analyzingOverlay" class="analyzing-overlay">
+    <div class="analyzing-content">
+      <div class="analyzing-spinner"></div>
+      <p class="analyzing-text">
+        Analyzing discussion<span class="analyzing-dots"><span></span><span></span><span></span></span>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // === ELEMENTS ===
+    const transcriptInput = document.getElementById('transcript');
+    const charCount = document.getElementById('charCount');
+    const clearBtn = document.getElementById('clearBtn');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const analyzingOverlay = document.getElementById('analyzingOverlay');
+    const charCounter = document.querySelector('.char-counter');
+
+    // === CHARACTER COUNTER ===
+    function updateCharacterCount() {
+      const count = transcriptInput.value.length;
+      charCount.textContent = count.toLocaleString();
+
+      // Visual warnings
+      charCounter.classList.remove('warning', 'danger');
+      if (count > 10000) {
+        charCounter.classList.add('danger');
+      } else if (count > 5000) {
+        charCounter.classList.add('warning');
+      }
+    }
+
+    transcriptInput.addEventListener('input', updateCharacterCount);
+
+    // === CLEAR BUTTON ===
+    clearBtn.addEventListener('click', () => {
+      transcriptInput.value = '';
+      updateCharacterCount();
+      transcriptInput.focus();
+    });
+
+    // === ANALYZE BUTTON ===
+    analyzeBtn.addEventListener('click', () => {
+
+    // save transcript
+    localStorage.setItem(
+        'continuumTranscript',
+        transcriptInput.value
+    );
+    localStorage.removeItem('continuumAIAnalysis');
+    localStorage.removeItem('analysisComplete');
+    // show loading animation
+    analyzingOverlay.classList.add('active');
+
+    // go to Gemini
+    window.location.href = 'analysis.html';
+
+});
+
+    // === ALLOW ENTER KEY IN TEXTAREA ===
+    transcriptInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        analyzeBtn.click();
+      }
+    });
+
+    // Initialize character count
+    updateCharacterCount();
+  </script>
+
+</body>
+</html>

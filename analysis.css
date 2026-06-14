@@ -1,0 +1,1040 @@
+/* GLOBAL PAGE STYLING */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #050816;
+    color: #ffffff;
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+/* === SECTION 1: ANALYSIS RESULTS HEADER & SCORE === */
+
+.results-section {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  position: relative;
+}
+
+/* Header */
+.results-header {
+  margin-bottom: 3rem;
+}
+
+.results-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.5px;
+}
+
+.results-subtitle {
+  font-size: 1.125rem;
+  color: #9ca3af;
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+/* Score Card - Glassmorphism */
+.score-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 2.5rem 3.5rem;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gradient top border */
+.score-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #00e5ff, #a855f7);
+}
+
+/* Score Label */
+.score-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 1.5rem;
+}
+
+/* Circular Score */
+.score-circle {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto;
+}
+
+.score-circle svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+/* Circle Background */
+.score-circle-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.1);
+  stroke-width: 8;
+}
+
+/* Circle Progress */
+.score-circle-progress {
+  fill: none;
+  stroke: url(#scoreGradient);
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 502;
+  stroke-dashoffset: 502;
+  transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Score Value */
+.score-value {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #00e5ff, #a855f7);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.score-unit {
+  font-size: 1.5rem;
+}
+
+/* Animation Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.score-card {
+  animation: fadeInUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .results-title {
+    font-size: 2rem;
+  }
+
+  .score-card {
+    padding: 2rem 1.5rem;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  .score-circle {
+    width: 150px;
+    height: 150px;
+  }
+
+  .score-value {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .results-title {
+    font-size: 1.75rem;
+  }
+
+  .results-subtitle {
+    font-size: 1rem;
+  }
+}
+/* === DECISIONS FOUND SECTION === */
+
+.decisions-section {
+  padding: 1.5rem;
+}
+
+/* Glassmorphism Card */
+.decisions-card {
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 20px;
+  padding: 1.75rem;
+  transition: all 0.3s ease;
+}
+
+.decisions-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(34, 197, 94, 0.35);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3),
+              0 0 30px rgba(34, 197, 94, 0.1);
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Card Icon */
+.card-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  border-radius: 12px;
+  color: #22c55e;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Decisions List */
+.decisions-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.decision-item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.decision-item:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.item-check {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(34, 197, 94, 0.15);
+  border-radius: 8px;
+  color: #22c55e;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.item-text {
+  color: #e5e7eb;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.decisions-card {
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
+  animation-delay: 0.1s;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .decisions-card {
+    padding: 1.25rem;
+  }
+
+  .card-header {
+    gap: 0.5rem;
+  }
+
+  .card-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .decision-item {
+    padding: 0.75rem;
+  }
+
+  .item-text {
+    font-size: 0.9rem;
+  }
+}
+/* === DEPENDENCIES SECTION === */
+
+.dependencies-section {
+  padding: 1.5rem;
+}
+
+/* Glassmorphism Card */
+.dependencies-card {
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+  border-radius: 20px;
+  padding: 1.75rem;
+  transition: all 0.3s ease;
+}
+
+.dependencies-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(168, 85, 247, 0.35);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3),
+              0 0 30px rgba(168, 85, 247, 0.1);
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Card Icon */
+.card-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  border-radius: 12px;
+  color: #a855f7;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Dependencies List */
+.dependencies-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dependency-item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border-left: 3px solid rgba(168, 85, 247, 0.4);
+  transition: all 0.2s ease;
+}
+
+.dependency-item:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.item-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  color: #a855f7;
+  font-weight: 700;
+}
+
+.item-text {
+  color: #d1d5db;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dependencies-card {
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
+  animation-delay: 0.2s;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .dependencies-card {
+    padding: 1.25rem;
+  }
+
+  .card-header {
+    gap: 0.5rem;
+  }
+
+  .card-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .dependency-item {
+    padding: 0.75rem;
+  }
+
+  .item-text {
+    font-size: 0.9rem;
+  }
+}
+/* === RISKS SECTION === */
+
+.risks-section {
+  padding: 1.5rem;
+}
+
+/* Glassmorphism Card */
+.risks-card {
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 20px;
+  padding: 1.75rem;
+  transition: all 0.3s ease;
+}
+
+.risks-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(239, 68, 68, 0.35);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3),
+              0 0 30px rgba(239, 68, 68, 0.1);
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Card Icon */
+.card-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: 12px;
+  color: #ef4444;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Risks List */
+.risks-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.risk-item {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.875rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border-left: 3px solid rgba(239, 68, 68, 0.5);
+  transition: all 0.2s ease;
+}
+
+.risk-item:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.item-icon {
+  flex-shrink: 0;
+  font-size: 1rem;
+  color: #f59e0b;
+  font-weight: 700;
+}
+
+.item-text {
+  color: #fca5a5;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.risks-card {
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
+  animation-delay: 0.3s;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .risks-card {
+    padding: 1.25rem;
+  }
+
+  .card-header {
+    gap: 0.5rem;
+  }
+
+  .card-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .risk-item {
+    padding: 0.75rem;
+  }
+
+  .item-text {
+    font-size: 0.9rem;
+  }
+}
+/* === RECOMMENDED FOLLOW-UPS SECTION === */
+
+.followups-section {
+  padding: 1.5rem;
+}
+
+/* Glassmorphism Card */
+.followups-card {
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 20px;
+  padding: 1.75rem;
+  transition: all 0.3s ease;
+}
+
+.followups-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 229, 255, 0.35);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3),
+              0 0 30px rgba(0, 229, 255, 0.1);
+}
+
+/* Card Header */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* Card Icon */
+.card-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 229, 255, 0.15);
+  border: 1px solid rgba(0, 229, 255, 0.35);
+  border-radius: 12px;
+  color: #00e5ff;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+/* Follow-ups Grid */
+.followups-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.followup-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 14px;
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  transition: all 0.2s ease;
+}
+
+.followup-item:hover {
+  background: rgba(0, 229, 255, 0.08);
+  border-color: rgba(0, 229, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.item-check {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 229, 255, 0.15);
+  border-radius: 8px;
+  color: #00e5ff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.item-text {
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.followups-card {
+  animation: fadeInUp 0.4s ease forwards;
+  opacity: 0;
+  animation-delay: 0.4s;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .followups-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .followups-card {
+    padding: 1.25rem;
+  }
+
+  .card-header {
+    gap: 0.5rem;
+  }
+
+  .card-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+  }
+
+  .followup-item {
+    padding: 0.875rem 1rem;
+  }
+
+  .item-text {
+    font-size: 0.85rem;
+  }
+}
+/* === CTA SECTION === */
+
+.cta-section {
+  padding: 3rem 1.5rem;
+}
+
+/* CTA Card */
+.cta-card {
+  background: rgba(255, 255, 255, 0.025);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gradient top border */
+.cta-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #00e5ff, #a855f7, #00e5ff);
+  background-size: 200% 100%;
+  animation: gradientMove 3s ease infinite;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Ambient glow */
+.cta-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* CTA Content */
+.cta-content {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+}
+
+.cta-subtitle {
+  font-size: 1rem;
+  color: #9ca3af;
+  max-width: 450px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+
+/* CTA Button */
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #00e5ff 0%, #00c4ff 50%, #a855f7 100%);
+  background-size: 200% 100%;
+  border: none;
+  border-radius: 14px;
+  color: #050507;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 25px rgba(0, 229, 255, 0.35);
+}
+
+.cta-button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 40px rgba(0, 229, 255, 0.45),
+              0 0 50px rgba(0, 229, 255, 0.2);
+  background-position: 100% 0;
+}
+
+.cta-button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Button hover icon animation */
+.cta-button:hover .btn-icon {
+  animation: pulse 0.6s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cta-card {
+  animation: fadeInUp 0.5s ease forwards;
+  opacity: 0;
+  animation-delay: 0.5s;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .cta-card {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .cta-title {
+    font-size: 1.5rem;
+  }
+
+  .cta-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+  }
+}
+@media print {
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .download-btn {
+    display: none !important;
+  }
+
+  .score-card,
+  .decisions-card,
+  .dependencies-card,
+  .risks-card,
+  .followups-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 20px;
+  }
+
+  .results-section {
+    padding: 20px;
+  }
+
+  * {
+    box-shadow: none !important;
+  }
+}
+@media print {
+
+  body {
+    zoom: 0.75;
+  }
+
+  .download-btn {
+    display: none !important;
+  }
+
+  section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
+.ai-card{
+    background:#0f172a;
+    border:1px solid #1e40af;
+    border-radius:16px;
+    padding:24px;
+    margin:30px 0;
+    color:white;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+.ai-card h3{
+    margin-bottom:15px;
+    color:#38bdf8;
+}
+
+.ai-card h2{
+    color:#38bdf8;
+    margin-top:25px;
+    margin-bottom:12px;
+}
+
+.ai-card ul{
+    padding-left:24px;
+}
+
+.ai-card li{
+    margin-bottom:10px;
+    line-height:1.7;
+}
+
+.ai-card p{
+    line-height:1.7;
+}
+.decision-card,
+.dependency-card,
+.risk-card,
+.action-card{
+    background:#0f172a;
+    border:1px solid #1e40af;
+    border-radius:18px;
+    padding:24px;
+    margin:20px 0;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+.decision-card h2{
+    color:#38bdf8;
+}
+
+.dependency-card h2{
+    color:#818cf8;
+}
+
+.risk-card h2{
+    color:#f59e0b;
+}
+
+.action-card h2{
+    color:#22c55e;
+}
+
+.decision-card li,
+.dependency-card li,
+.risk-card li,
+.action-card li{
+    margin:12px 0;
+    line-height:1.8;
+}
+.decision-card,
+.dependency-card,
+.risk-card,
+.action-card {
+    background: #0f172a;
+    border: 1px solid rgba(56,189,248,.25);
+    border-radius: 18px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.3);
+}
+
+.decision-card h2,
+.dependency-card h2,
+.risk-card h2,
+.action-card h2 {
+    color: #38bdf8;
+    margin-bottom: 16px;
+}
+
+.decision-card p,
+.dependency-card p,
+.risk-card p,
+.action-card p {
+    color: #cbd5e1;
+    line-height: 1.8;
+    margin-bottom: 18px;
+}
+
+.decision-card li,
+.dependency-card li,
+.risk-card li,
+.action-card li {
+    margin-bottom: 12px;
+    color: white;
+}

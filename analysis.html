@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Continuum Analysis</title>
+
+    <link rel="stylesheet" href="analysis.css">
+</head>
+
+<body>
+    <!-- SECTION 1: ANALYSIS RESULTS HEADER & SCORE -->
+<section class="results-section">
+  <div class="results-header">
+    <h2 class="results-title">Analysis Results</h2>
+    <p class="results-subtitle">
+      Continuum has analyzed the discussion and surfaced critical insights.
+    </p>
+  </div>
+
+  <!-- Health Score Card -->
+  <div class="score-card">
+    <div class="score-label">Decision Continuity Health</div>
+    <div class="score-circle">
+      <svg viewBox="0 0 180 180">
+        <defs>
+          <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#00e5ff" />
+            <stop offset="100%" stop-color="#a855f7" />
+          </linearGradient>
+        </defs>
+        <circle class="score-circle-bg" cx="90" cy="90" r="80" />
+        <circle class="score-circle-progress" cx="90" cy="90" r="80" id="scoreProgress" />
+      </svg>
+      <div class="score-value">
+        <span id="scoreNumber">0</span><span class="score-unit">%</span>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center; margin-top:20px;">
+    <button id="downloadBtn" class="analyze-btn download-btn">
+        Download Report PDF
+    </button>
+</div>
+</section>
+<section class="ai-section">
+    <div class="decision-card">
+        <div class="card-header">
+            <h3 class="card-title">AI Analysis</h3>
+        </div>
+
+        <div
+            id="aiSummary"
+            style="
+                white-space: pre-wrap;
+                padding:20px;
+                color:white;
+            "
+        >
+        </div>
+    </div>
+</section>
+<!-- DECISIONS FOUND SECTION -->
+<section class="decisions-section">
+  <div class="decisions-card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h3 class="card-title">
+    Decisions Found (<span id="decisionCount">0</span>)
+</h3>
+    </div>
+    
+    <ul class="decisions-list" id="decisionsList"></ul>
+    
+  </div>
+</section>
+<!-- DEPENDENCIES SECTION -->
+<section class="dependencies-section">
+  <div class="dependencies-card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 3 21 3 21 8"></polyline>
+          <line x1="4" y1="20" x2="21" y2="3"></line>
+          <polyline points="21 16 21 21 16 21"></polyline>
+          <line x1="15" y1="15" x2="21" y2="21"></line>
+          <line x1="4" y1="4" x2="9" y2="9"></line>
+        </svg>
+      </div>
+      <h3 class="card-title">
+    Dependencies (<span id="dependencyCount">0</span>)
+</h3>
+    </div>
+    <ul class="dependencies-list" id="dependenciesList"></ul>
+  </div>
+</section>
+<!-- RISKS SECTION -->
+<section class="risks-section">
+  <div class="risks-card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+          <line x1="12" y1="9" x2="12" y2="13"></line>
+          <line x1="12" y1="17" x2="12.01" y2="17"></line>
+        </svg>
+      </div>
+      <h3 class="card-title">
+  Risks (<span id="riskCount">0</span>)
+</h3>
+    </div>
+    <ul class="risks-list" id="risksList">
+      <li class="risk-item">
+        <span class="item-icon">⚠</span>
+        <span class="item-text">Backup plan not defined</span>
+      </li>
+      <li class="risk-item">
+        <span class="item-icon">⚠</span>
+        <span class="item-text">Emergency response not reviewed</span>
+      </li>
+      <li class="risk-item">
+        <span class="item-icon">⚠</span>
+        <span class="item-text">Passenger impact not fully assessed</span>
+      </li>
+      <li class="risk-item">
+        <span class="item-icon">⚠</span>
+        <span class="item-text">Crew allocation unresolved</span>
+      </li>
+    </ul>
+  </div>
+</section>
+<!-- RECOMMENDED FOLLOW-UPS SECTION -->
+<section class="followups-section">
+  <div class="followups-card">
+    <div class="card-header">
+      <div class="card-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h3 class="card-title">
+    Recommended Follow-Ups (<span id="followupCount">0</span>)
+</h3>
+    </div>
+    <div class="followups-grid" id="followupsGrid">
+</div>
+  </div>
+</section>
+<!-- CTA SECTION -->
+<section class="cta-section">
+  <div class="cta-card">
+    <div class="cta-content">
+      <h3 class="cta-title">Ready to analyze more discussions?</h3>
+      <p class="cta-subtitle">
+        Continuum helps teams capture every critical decision, dependency, and risk before they become costly mistakes.
+      </p>
+      <button id="analyzeBtn" class="cta-button">
+        <span class="btn-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </span>
+        <span class="btn-text">Analyze Another Discussion</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<script>
+    // === CTA SECTION JAVASCRIPT ===
+
+(function() {
+  const analyzeBtn = document.getElementById('analyzeBtn');
+  
+  if (analyzeBtn) {
+    analyzeBtn.addEventListener('click', function(e) {
+      // Add click effect
+      e.preventDefault();
+      
+      // Add loading state
+      analyzeBtn.style.opacity = '0.8';
+      analyzeBtn.style.pointerEvents = 'none';
+      
+      // Button text change
+      const btnText = analyzeBtn.querySelector('.btn-text');
+      if (btnText) {
+        btnText.textContent = 'Loading...';
+      }
+      
+      // Redirect to transcript/input page
+      setTimeout(function() {
+        window.location.href = 'transcript.html';
+      }, 300);
+    });
+  }
+  // Health Score Animation
+
+const transcript =
+    localStorage.getItem('continuumTranscript') || '';
+    console.log("Transcript received:");
+    console.log(transcript);
+const aiAnalysis =
+    localStorage.getItem("continuumAIAnalysis") || "";
+const aiSummary =
+    document.getElementById("aiSummary");
+
+if (aiSummary) {
+    aiSummary.innerHTML = aiAnalysis;
+}
+
+
+console.log("AI ANALYSIS:");
+console.log(aiAnalysis);
+
+
+const scoreNumber = document.getElementById('scoreNumber');
+const progressCircle = document.getElementById('scoreProgress');
+const decisionsList = document.getElementById('decisionsList');
+const decisionCountEl = document.getElementById('decisionCount');
+const transcriptLower = transcript.toLowerCase();
+
+if (decisionsList) {
+
+    let decisions = [];
+
+    if (transcriptLower.includes('repair'))
+        decisions.push('Repair issue identified');
+
+   if (
+    transcriptLower.includes('hire') ||
+    transcriptLower.includes('hiring')
+)
+    decisions.push('Hiring decision discussed');
+
+const approvalWords = [
+    'approve',
+    'approved',
+    'approval',
+    'authorization'
+];
+
+if (
+    approvalWords.some(word =>
+        transcriptLower.includes(word)
+    )
+)
+{
+    decisions.push('Approval decision required');
+}
+
+if (
+    transcriptLower.includes('launch')
+)
+    decisions.push('Product launch discussed');
+
+if (
+    transcriptLower.includes('budget')
+)
+    decisions.push('Budget allocation discussed');
+    if (decisions.length === 0)
+        decisions.push('General discussion reviewed');
+    decisions = [...new Set(decisions)];
+    decisions.forEach(decision => {
+        decisionsList.innerHTML += `
+            <li class="decision-item">
+                <span class="item-check">✓</span>
+                <span class="item-text">${decision}</span>
+            </li>
+        `;
+    });
+    if (decisionCountEl) {
+    decisionCountEl.textContent = decisions.length;
+}
+}
+const dependenciesList = document.getElementById('dependenciesList');
+const dependencyCountEl = document.getElementById('dependencyCount');
+
+if (dependenciesList) {
+
+    let dependencies = [];
+
+    if (transcriptLower.includes('budget'))
+        dependencies.push('Budget approval affects project timeline');
+
+    if (transcriptLower.includes('hire'))
+        dependencies.push('Hiring affects delivery schedule');
+
+    if (transcriptLower.includes('vendor'))
+        dependencies.push('Vendor response affects implementation');
+
+    if (transcriptLower.includes('approval'))
+        dependencies.push('Management approval required before execution');
+
+    if (dependencies.length === 0)
+        dependencies.push('No major dependencies detected');
+    dependencies = [...new Set(dependencies)];
+
+    dependencies.forEach(dep => {
+        dependenciesList.innerHTML += `
+            <li class="dependency-item">
+                <span class="item-icon">⚠</span>
+                <span class="item-text">${dep}</span>
+            </li>
+        `;
+    });
+    if (dependencyCountEl) {
+    dependencyCountEl.textContent = dependencies.length;
+}
+}
+const risksList = document.getElementById('risksList');
+const riskCountEl = document.getElementById('riskCount');
+
+if (risksList) {
+
+    let risks = [];
+
+    if (transcriptLower.includes('risk'))
+        risks.push('Risk identified during discussion');
+
+    if (transcriptLower.includes('delay'))
+        risks.push('Potential timeline delay');
+
+    if (transcriptLower.includes('budget'))
+        risks.push('Budget constraints may impact execution');
+
+    if (transcriptLower.includes('resource'))
+        risks.push('Resource availability concern');
+
+    if (risks.length === 0)
+        risks.push('No major risks detected');
+
+    risksList.innerHTML = '';
+    risks = [...new Set(risks)];
+    risks.forEach(risk => {
+        risksList.innerHTML += `
+            <li class="risk-item">
+                <span class="item-icon">⚠</span>
+                <span class="item-text">${risk}</span>
+            </li>
+        `;
+    });
+    if (riskCountEl) {
+    riskCountEl.textContent = risks.length;
+}
+}
+const followupsGrid = document.getElementById('followupsGrid');
+const followupCountEl = document.getElementById('followupCount');
+
+if (followupsGrid) {
+
+    let followups = [];
+
+    if (transcriptLower.includes('approval'))
+        followups.push('Obtain final approval');
+
+    if (transcriptLower.includes('budget'))
+        followups.push('Finalize budget allocation');
+
+    if (transcriptLower.includes('vendor'))
+        followups.push('Follow up with vendor');
+
+    if (transcriptLower.includes('hire'))
+        followups.push('Complete hiring decision');
+
+    if (transcriptLower.includes('launch'))
+        followups.push('Prepare launch readiness review');
+
+    if (followups.length === 0)
+        followups.push('Review discussion outcomes');
+
+    followupsGrid.innerHTML = '';
+    followups = [...new Set(followups)];
+
+    followups.forEach(item => {
+        followupsGrid.innerHTML += `
+            <div class="followup-item">
+                <span class="item-check">✓</span>
+                <span class="item-text">${item}</span>
+            </div>
+        `;
+    });
+    if (followupCountEl) {
+    followupCountEl.textContent = followups.length;
+}
+}
+let score = 70;
+
+const decisionCount =
+  decisionsList ? decisionsList.querySelectorAll('.decision-item').length : 0;
+
+const dependencyCount =
+  dependenciesList ? dependenciesList.querySelectorAll('.dependency-item').length : 0;
+
+const riskCount =
+  risksList ? risksList.querySelectorAll('.risk-item').length : 0;
+
+const followupCount =
+  followupsGrid ? followupsGrid.querySelectorAll('.followup-item').length : 0;
+
+score += decisionCount * 4;
+
+score += followupCount * 3;
+
+score -= riskCount * 5;
+
+score = Math.max(0, Math.min(score, 100));
+
+if (scoreNumber && progressCircle) {
+    const decisionCount = decisionsList
+    ? decisionsList.querySelectorAll('.decision-item').length
+    : 0;
+    
+    const radius = 80;
+    const circumference = 2 * Math.PI * radius;
+
+    progressCircle.style.strokeDasharray = circumference;
+    progressCircle.style.strokeDashoffset = circumference;
+
+    let current = 0;
+
+    const interval = setInterval(() => {
+
+        if (current >= score) {
+            clearInterval(interval);
+            return;
+        }
+
+        current++;
+
+        scoreNumber.textContent = current;
+
+        const offset =
+            circumference - (current / 100) * circumference;
+
+        progressCircle.style.strokeDashoffset = offset;
+
+    }, 20);
+}
+
+
+const downloadBtn =
+    document.getElementById('downloadBtn');
+
+if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => {
+        window.print();
+    });
+}
+
+})();
+
+</script>
+<script src="gemini.js"></script>
+
+</body>
+
+</html>
