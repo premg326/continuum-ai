@@ -49,4 +49,4 @@ Run locally and deploy with Vercel.
 
 ## Author
 
-Prem G
+Prem Gupta
